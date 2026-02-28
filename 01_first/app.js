@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(compression());
 
-if(process.env.NODE_ENV === "development") {
+if(env.nodeEnv === "development") {
 app.use(morgan("dev"));
 }
 

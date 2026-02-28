@@ -71,3 +71,16 @@ export const logout = (req, res) => {
 
     res.json({message: "Logged out Successfully"})
 }
+
+export const logoutAll = async(req, res) => {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    user.refreshTokenVersion += 1;
+    await user.save();
+
+    res.clearCookie("refreshToken");
+
+    res.json({message: "Logged out from all devices"})
+}
