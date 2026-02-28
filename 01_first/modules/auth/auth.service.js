@@ -1,5 +1,6 @@
 import {User} from '../../models/user.model.js'
 import {generateAccessToken, generateRefreshToken} from '../../utils/token.js'
+import { AppError } from '../../utils/appError.js'
 
 export const registerUser = async (data) => {
     const existingUser = await User.findOne({email: data.email});
@@ -18,13 +19,13 @@ export const loginUser = async (email, password) => {
     ).select("+password");
 
     if(!user) {
-        throw new Error ("Invalid Credential")
+        throw new AppError("Invalid Credential", 401);
     }
 
     const isMatch = await user.comparePassword(password);
 
     if(!isMatch) {
-        throw new Error("Invalid Credential")
+        throw new AppError("Invalid Credential", 401);
     }
 
     const accessToken = generateAccessToken(user);
