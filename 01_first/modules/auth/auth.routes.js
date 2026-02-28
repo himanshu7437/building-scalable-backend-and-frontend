@@ -4,11 +4,12 @@ import { protect } from './auth.middleware.js';
 import { authorize } from '../../middleware/role.middleware.js';
 import { registerSchema, loginSchema } from '../auth/auth.validation.js'
 import { validate } from '../../middleware/validate.middleware.js'
+import { loginLimiter } from '../../middleware/loginLimiter.js'
 
 const router = express.Router();
 
 router.post('/register', validate(registerSchema), register);
-router.post('/login', validate(loginSchema), login);
+router.post('/login', loginLimiter, validate(loginSchema), login);
 router.post('/refresh', refresh);
 router.post('/logout', logout);
 router.post('/logout-all', protect, logoutAll);
